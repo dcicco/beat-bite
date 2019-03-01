@@ -1,0 +1,12 @@
+/* Font families - Ubuntu & PT Sans */
+@import url('https://fonts.googleapis.com/css?family=PT+Sans:400,400i|Ubuntu');
+$font-ubuntu: 'Ubuntu', sans-serif;
+$font-pt: 'PT Sans', sans-serif;
+
+/* Palette - coolors.co/1b1b1e-222226-c62f37-e3e7e8-dbdfe0 */
+$darkest: rgba(27, 27, 30, 1);
+$dark: rgba(34, 34, 38, 1);
+$highlight-red: rgba(198, 47, 55, 1);
+$highlight-blue: rgba(47, 115, 198, 1);
+$lightest: rgba(227, 231, 232, 1);
+$light: rgba(219, 223, 224, 1);
