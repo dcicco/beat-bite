@@ -2,7 +2,11 @@
   "name": "beat-bite",
   "version": "0.0.1",
   "author": "Dante Cicco",
-  "repository": "https://github.com/dcicco/beat-bite",
+  "description": "a bite-sized beat and melody maker",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dcicco/beat-bite.git"
+  },
   "license": "ISC",
   "scripts": {
     "start": "node src/server/index.js",
