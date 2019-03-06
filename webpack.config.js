@@ -32,21 +32,23 @@ module.exports = {
         test: /\.(png|jpg|woff|woff2|eot|ttf|svg)$/,
         loader: 'url-loader?limit=100000'
       },
-      {
-        test: /\.html$/,
-        loader: 'html-loader?attrs[]=video:src'
-      }
+      // {
+      //   test: /\.html$/,
+      //   loader: 'html-loader?attrs[]=video:src'
+      // }
     ]
   },
   devServer: {
     port: 3001,
-    open: true
+    open: true,
+    contentBase: './public',
+    watchContentBase: true,
   },
   plugins: [
     new CleanWebpackPlugin([outputDirectory]),
     new HtmlWebpackPlugin({
       template: './public/index.html',
       favicon: './public/favicon.ico'
-    })
+    }),
   ]
 };
