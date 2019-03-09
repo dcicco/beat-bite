@@ -2,8 +2,8 @@ import $ from 'jquery';
 import tone from 'tone';
 
 
-var $test = $('#test');
-$test.css('color', 'red');
+// var $test = $('#test');
+// $test.css('color', 'red');
 var playBtn = $('#play');
 var synth = new tone.Synth().toMaster();
 

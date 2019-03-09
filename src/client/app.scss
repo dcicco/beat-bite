@@ -1,8 +1,49 @@
 @import 'reset';
 @import 'variables';
 
+.t-light {
+  background-color: $light;
+}
+
+.t-dark {
+  background-color: $dark;
+}
+
 #root {
   width: 100%;
   height: 100%;
-  background-image: url('./assets/images/bg.jpg');
+}
+
+#sideBar {
+  height: 100%;
+  width: 80px;
+  position: absolute;
+  background-color: $dark;
+  z-index: 999;
+}
+
+#topBar {
+  height: 80px;
+  width: 100%;
+  position: absolute;
+  background-color: $dark;
+  text-align: center;
+  font-size: 16pt;
+  font-family: $font-ubuntu;
+}
+
+#controlBar {
+  height: 80px;
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  background-color: $dark;
+}
+
+#mainContainer {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-color: $darkest;
+  z-index: -1;
 }
