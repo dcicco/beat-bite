@@ -14,12 +14,28 @@
   height: 100%;
 }
 
-#sideBar {
+#logo {
+  width: 70px;
+  height: 70px;
+  margin: 5px 0 0 5px;
+  background-image: url('./assets/images/beat-bite-logo.svg');
+}
+
+%sideBar {
   height: 100%;
   width: 80px;
   position: absolute;
+}
+
+#sideBar {
+  @extend %sideBar;
   background-color: $dark;
   z-index: 999;
+}
+#shadowSideBar {
+  @extend %sideBar;
+  z-index: -1;
+  box-shadow: 0px 0px 10px;
 }
 
 #topBar {
@@ -28,8 +44,20 @@
   position: absolute;
   background-color: $dark;
   text-align: center;
-  font-size: 16pt;
+  font-size: 24pt;
   font-family: $font-ubuntu;
+  box-shadow: 0px 0px 10px;
+  h1 {
+    color: $light;
+    text-shadow: 0 0 10px black;
+    margin: 0 auto 0 auto;
+    line-height: 80px;
+    transition: 0.7s;
+  }
+  h1:hover {
+    text-shadow: 0 0 10px $light;
+    transform: scale(1.05);
+  }
 }
 
 #controlBar {
@@ -38,6 +66,7 @@
   position: absolute;
   bottom: 0px;
   background-color: $dark;
+  box-shadow: 0px 0px 10px;
 }
 
 #mainContainer {
@@ -45,5 +74,5 @@
   width: 100%;
   position: absolute;
   background-color: $darkest;
-  z-index: -1;
+  z-index: -999;
 }
