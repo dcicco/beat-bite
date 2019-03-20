@@ -1,10 +1,10 @@
-/* Font families - Ubuntu & PT Sans */
-@import url('https://fonts.googleapis.com/css?family=PT+Sans:400,400i|Ubuntu');
-$font-ubuntu: 'Ubuntu', sans-serif;
-$font-pt: 'PT Sans', sans-serif;
+/* Font families - Press Start 2P & Roboto */
+@import url('https://fonts.googleapis.com/css?family=Press+Start+2P|Roboto:400,700');
+$font-display: 'Press Start 2P', sans-serif;
+$font-main: 'Roboto', sans-serif;
 
-/* Palette - coolors.co/1b1b1e-222226-c62f37-e3e7e8-dbdfe0 */
-$darkest: rgba(27, 27, 30, 1);
+/* Palette - https://coolors.co/141416-222226-c62f37-e3e7e8-dbdfe0 */
+$darkest: rgba(20, 20, 22, 1);
 $dark: rgba(34, 34, 38, 1);
 $highlight-red: rgba(198, 47, 55, 1);
 $highlight-blue: rgba(47, 115, 198, 1);

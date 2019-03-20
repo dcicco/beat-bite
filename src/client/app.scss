@@ -31,10 +31,22 @@
   background-color: $dark;
   z-index: 999;
 }
+
 #shadowSideBar {
   @extend %sideBar;
   z-index: -1;
   box-shadow: 0px 0px 10px;
+}
+
+#navItems {
+  font-family: $font-main;
+  padding: 25px 0 25px 25px;
+  h2 {
+    font-size: 14pt;
+    font-weight: 700;
+    color: $light;
+    padding: 25px 0 25px 0;
+  }
 }
 
 #topBar {
@@ -44,8 +56,8 @@
   position: fixed;
   background-color: $dark;
   text-align: center;
-  font-size: 24pt;
-  font-family: $font-ubuntu;
+  font-size: 18pt;
+  font-family: $font-display;
   box-shadow: 0px 0px 10px;
   h1 {
     position: absolute;
