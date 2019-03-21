@@ -1,5 +1,7 @@
 @import 'reset';
 @import 'variables';
+@import 'assets/scss/fontawesome';
+@import 'assets/scss/solid';
 
 .t-light {
   background-color: $light;
@@ -40,12 +42,85 @@
 
 #navItems {
   font-family: $font-main;
-  padding: 25px 0 25px 25px;
+  padding: 25px 0 25px 0;
   h2 {
+    display: flex;
     font-size: 14pt;
     font-weight: 700;
     color: $light;
-    padding: 25px 0 25px 0;
+    margin: 20px 0 20px 0;
+    padding: 10px 0 10px 25px;
+  }
+}
+
+.nav-hover {
+  outline: 0;
+  transition: background-color 0.4s;
+
+  &:hover {
+    background-color: lighten($dark, 10%);
+  }
+  &:focus {
+    background-color: lighten($dark, 10%);
+    border-left: 5px solid $highlight-red;
+  }
+}
+
+#saved {
+  @extend %fa-icon;
+  @extend .fas;
+
+  &:before {
+    font-size: 12pt;
+    content: fa-content($fa-var-music);
+  }
+  &:after {
+    font-size: 14pt;
+    content: fa-content($fa-var-angle-left);
+  }
+  &:focus {
+    &:after {
+      content: fa-content($fa-var-angle-down);
+    }
+  }
+}
+
+#instruments {
+  @extend %fa-icon;
+  @extend .fas;
+
+  &:before {
+    font-size: 12pt;
+    content: fa-content($fa-var-drum);
+  }
+  &:after {
+    font-size: 14pt;
+    content: fa-content($fa-var-angle-left);
+  }
+  &:focus {
+    &:after {
+      content: fa-content($fa-var-angle-down);
+    }
+  }
+}
+
+#settings {
+  @extend %fa-icon;
+  @extend .fas;
+
+  &:before {
+    font-size: 12pt;
+    content: fa-content($fa-var-cog);
+  }
+}
+
+#about {
+  @extend %fa-icon;
+  @extend .fas;
+
+  &:before {
+    font-size: 12pt;
+    content: fa-content($fa-var-user-friends);
   }
 }
 
@@ -66,11 +141,13 @@
     left: 50%;
     line-height: 80px;
     transition: text-shadow 0.7s, transform 0.7s;
+
+    &:hover {
+      text-shadow: 0 0 10px $light;
+      transform: scale(1.05);
+    }
   }
-  h1:hover {
-    text-shadow: 0 0 10px $light;
-    transform: scale(1.05);
-  }
+
 }
 
 #controlBar {
