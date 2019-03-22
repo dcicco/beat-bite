@@ -102,26 +102,6 @@
   }
 }
 
-// #settings {
-//   @extend %fa-icon;
-//   @extend .fas;
-//
-//   &:before {
-//     font-size: 12pt;
-//     content: fa-content($fa-var-cog);
-//   }
-// }
-//
-// #about {
-//   @extend %fa-icon;
-//   @extend .fas;
-//
-//   &:before {
-//     font-size: 12pt;
-//     content: fa-content($fa-var-user);
-//   }
-// }
-
 .bars {
   position: absolute;
   bottom: 20px;
