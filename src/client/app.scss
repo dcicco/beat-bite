@@ -44,13 +44,18 @@
   font-family: $font-main;
   padding: 25px 0 25px 0;
   h2 {
-    display: flex;
+    display: inline-flex;
     font-size: 14pt;
     font-weight: 700;
     color: $light;
-    margin: 20px 0 20px 0;
-    padding: 10px 0 10px 25px;
+    margin: 10px 0 10px 0;
   }
+}
+
+.nav-icon {
+  padding: 10px 0 10px 25px;
+  font-size: 14pt;
+  color: $light;
 }
 
 .nav-hover {
@@ -63,6 +68,17 @@
   &:focus {
     background-color: lighten($dark, 10%);
     border-left: 5px solid $highlight-red;
+
+    #saved {
+      &:after {
+        content: fa-content($fa-var-angle-down);
+      }
+    }
+    #instruments {
+      &:after {
+        content: fa-content($fa-var-angle-down);
+      }
+    }
   }
 }
 
@@ -70,18 +86,9 @@
   @extend %fa-icon;
   @extend .fas;
 
-  &:before {
-    font-size: 12pt;
-    content: fa-content($fa-var-music);
-  }
   &:after {
     font-size: 14pt;
     content: fa-content($fa-var-angle-left);
-  }
-  &:focus {
-    &:after {
-      content: fa-content($fa-var-angle-down);
-    }
   }
 }
 
@@ -89,38 +96,42 @@
   @extend %fa-icon;
   @extend .fas;
 
-  &:before {
-    font-size: 12pt;
-    content: fa-content($fa-var-drum);
-  }
   &:after {
     font-size: 14pt;
     content: fa-content($fa-var-angle-left);
   }
-  &:focus {
-    &:after {
-      content: fa-content($fa-var-angle-down);
-    }
-  }
 }
 
-#settings {
-  @extend %fa-icon;
-  @extend .fas;
+// #settings {
+//   @extend %fa-icon;
+//   @extend .fas;
+//
+//   &:before {
+//     font-size: 12pt;
+//     content: fa-content($fa-var-cog);
+//   }
+// }
+//
+// #about {
+//   @extend %fa-icon;
+//   @extend .fas;
+//
+//   &:before {
+//     font-size: 12pt;
+//     content: fa-content($fa-var-user);
+//   }
+// }
 
-  &:before {
-    font-size: 12pt;
-    content: fa-content($fa-var-cog);
-  }
-}
+.bars {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  font-size: 28pt;
+  color: $light;
+  transition: transform 0.3s;
 
-#about {
-  @extend %fa-icon;
-  @extend .fas;
-
-  &:before {
-    font-size: 12pt;
-    content: fa-content($fa-var-user-friends);
+  &:hover {
+    transform: rotate(90deg);
   }
 }
 
