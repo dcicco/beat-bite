@@ -6,8 +6,14 @@ $(document).ready(() => {
   var $expandBars = $('.bars');
   var $sideBar = $('#sideBar');
   var $navItems = $('#navItems');
+  console.log($('#saved').attr('opened'));
+
   $expandBars.click(() => {
-    $sideBar.css('width', '80px');
+    $('.nav-header').text('');
     $('.nav-header').css('visibility', 'hidden');
+    $('#settings, #about').addClass('icon-after');
+    $sideBar.css('width', '80px');
+    $('#shadowSideBar').css('width', '80px');
+
   });
 });

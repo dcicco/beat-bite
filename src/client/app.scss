@@ -53,7 +53,7 @@
 }
 
 .nav-icon {
-  padding: 10px 0 10px 25px;
+  padding: 10px 0 10px 28px;
   font-size: 14pt;
   color: $light;
 }
@@ -82,17 +82,7 @@
   }
 }
 
-#saved {
-  @extend %fa-icon;
-  @extend .fas;
-
-  &:after {
-    font-size: 14pt;
-    content: fa-content($fa-var-angle-left);
-  }
-}
-
-#instruments {
+.icon-after {
   @extend %fa-icon;
   @extend .fas;
 
