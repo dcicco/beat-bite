@@ -38,6 +38,7 @@ module.exports = {
       // }
     ]
   },
+  devtool: 'cheap-source-map',
   devServer: {
     port: 3001,
     open: true,
