@@ -135,6 +135,22 @@
 
 }
 
+.modal {
+
+}
+
+.modal-content {
+  display: block;
+  margin: 15% auto;
+  width: 80%;
+  z-index: 1000;
+  background-color: $dark;
+}
+
+.modal-header {
+
+}
+
 #controlBar {
   height: 80px;
   width: 100%;
