@@ -171,3 +171,11 @@
   background-color: $darkest;
   z-index: -999;
 }
+p {    position: absolute;
+    color: $light;
+    text-shadow: 0 0 10px black;
+    left: 50%;
+    line-height: 80px;
+    transition: text-shadow 0.7s, transform 0.7s;
+    font-size: 15px;
+    }
