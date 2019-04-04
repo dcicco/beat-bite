@@ -4,6 +4,7 @@ import tone from 'tone';
 $(document).ready(() => {
   console.log('ready');
   var sidebarOpen = true;
+  var activeTheme = 1; // 1 = dark; 2 = light; 3 = contrast;
   var $expandBars = $('.bars');
   var $sideBar = $('#sideBar');
   var $navItems = $('#navItems');
@@ -14,7 +15,6 @@ $(document).ready(() => {
   function buildChart(heightPX, widthPX) {
     var height = heightPX.replace('px', '');
     var width = widthPX.replace('px', '');
-
   }
 
   $expandBars.click(() => {
@@ -38,5 +38,26 @@ $(document).ready(() => {
     $('.nav-icon').css('padding', '20px 0 20px 28px');
     $('#shadowSideBar, #sideBar').css('width', '80px');
     sidebarOpen = false;
+  }
+
+  $('.modal-button').click((e) => {
+    console.log(e.target.id);
+    let theme = e.target.id;
+    changeTheme(theme);
+  });
+
+  function changeTheme(theme) {
+    if (theme === 'darkTheme') {
+      activeTheme = 1;
+    }
+    if (theme === 'lightTheme') {
+      activeTheme = 2;
+    }
+    if (theme === 'conTheme') {
+      activeTheme = 3;
+    }
+    else {
+      activeTheme = 1;
+    }
   }
 });
