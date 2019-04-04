@@ -136,19 +136,31 @@
 }
 
 .modal {
-
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  font-family: $font-main;
+  z-index: 1000;
+  background-color: rgba(0,0,0,0.5);
 }
 
 .modal-content {
   display: block;
   margin: 15% auto;
   width: 80%;
-  z-index: 1000;
   background-color: $dark;
 }
 
 .modal-header {
+  color: $light;
+  font-size: 24pt;
+}
 
+.modal-body-header {
+  color: $light;
+  font-size: 16pt;
 }
 
 #controlBar {
