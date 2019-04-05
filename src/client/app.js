@@ -9,6 +9,8 @@ $(document).ready(() => {
   var $sideBar = $('#sideBar');
   var $navItems = $('#navItems');
   var mainDiv = $('#mainContainer');
+  var $settingsNav = $('.nav-hover:eq(2)');
+  var $closeSettings = $('#closeSettings');
 
   buildChart(mainDiv.css('height'), mainDiv.css('width'));
 
@@ -39,6 +41,20 @@ $(document).ready(() => {
     $('#shadowSideBar, #sideBar').css('width', '80px');
     sidebarOpen = false;
   }
+
+  $settingsNav.click(() => {
+    $('.modal').show();
+  });
+
+  $(window).click((e) => {
+    if (e.target.className === 'modal') {
+      $('.modal').hide();
+    }
+  });
+
+  $closeSettings.click(() => {
+    $('.modal').hide();
+  });
 
   $('.modal-button').click((e) => {
     console.log(e.target.id);
