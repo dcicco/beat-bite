@@ -36,7 +36,7 @@ $(document).ready(() => {
   }
 
   function closeSidebar() {
-    $('.nav-header').hide();
+    $('.nav-header:not(#naming)').hide();
     $('.nav-icon').css('padding', '20px 0 20px 28px');
     $('#shadowSideBar, #sideBar').css('width', '80px');
     sidebarOpen = false;
