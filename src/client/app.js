@@ -10,6 +10,7 @@ $(document).ready(() => {
   var $navItems = $('#navItems');
   var mainDiv = $('#mainContainer');
   var $settingsNav = $('.nav-hover:eq(2)');
+  var $aboutNav = $('.nav-hover:eq(3)');
   var $closeSettings = $('#closeSettings');
 
   var activeTheme = localStorage.getItem('activeTheme');
@@ -46,7 +47,11 @@ $(document).ready(() => {
   }
 
   $settingsNav.click(() => {
-    $('.modal').show();
+    $('.modal:eq(0)').show();
+  });
+
+  $aboutNav.click(() => {
+    $('.modal:eq(1)').show();
   });
 
   $(window).click((e) => {
