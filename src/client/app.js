@@ -4,7 +4,7 @@ import tone from 'tone';
 $(document).ready(() => {
   console.log('ready');
   var sidebarOpen = true;
-  var activeTheme = 1; // 1 = dark; 2 = light; 3 = contrast;
+  // var activeTheme; // 1 = dark; 2 = light; 3 = contrast;
   var $expandBars = $('.bars');
   var $sideBar = $('#sideBar');
   var $navItems = $('#navItems');
@@ -12,12 +12,15 @@ $(document).ready(() => {
   var $settingsNav = $('.nav-hover:eq(2)');
   var $closeSettings = $('#closeSettings');
 
-  buildChart(mainDiv.css('height'), mainDiv.css('width'));
+  var activeTheme = localStorage.getItem('activeTheme');
+  changeTheme(activeTheme);
 
-  function buildChart(heightPX, widthPX) {
-    var height = heightPX.replace('px', '');
-    var width = widthPX.replace('px', '');
-  }
+  // buildChart(mainDiv.css('height'), mainDiv.css('width'));
+  //
+  // function buildChart(heightPX, widthPX) {
+  //   var height = heightPX.replace('px', '');
+  //   var width = widthPX.replace('px', '');
+  // }
 
   $expandBars.click(() => {
     if (sidebarOpen === true) {
@@ -63,17 +66,25 @@ $(document).ready(() => {
   });
 
   function changeTheme(theme) {
-    if (theme === 'darkTheme') {
-      activeTheme = 1;
+    if (theme === 'darkTheme' || theme === '1') {
+      $('.t-light').each((i, obj) => {
+        $(obj).removeClass('t-light');
+        $(obj).addClass('t-dark');
+      });
+      localStorage.setItem('activeTheme', '1')
     }
-    if (theme === 'lightTheme') {
-      activeTheme = 2;
+    else if (theme === 'lightTheme' || theme === '2') {
+      $('.t-dark').each((i, obj) => {
+        $(obj).removeClass('t-dark');
+        $(obj).addClass('t-light');
+      });
+      localStorage.setItem('activeTheme', '2')
     }
-    if (theme === 'conTheme') {
-      activeTheme = 3;
+    else if (theme === 'conTheme') {
+      console.log('contrast');
     }
     else {
-      activeTheme = 1;
+      console.log('dark');
     }
   }
 });
