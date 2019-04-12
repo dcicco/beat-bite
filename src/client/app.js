@@ -8,13 +8,16 @@ $(document).ready(() => {
   var $expandBars = $('.bars');
   var $sideBar = $('#sideBar');
   var $navItems = $('#navItems');
-  var mainDiv = $('#mainContainer');
+  var $mainDiv = $('#mainContainer');
   var $settingsNav = $('.nav-hover:eq(2)');
   var $aboutNav = $('.nav-hover:eq(3)');
   var $closeSettings = $('#closeSettings');
+  var $closeAbout = $('#closeAbout');
 
   var activeTheme = localStorage.getItem('activeTheme');
   changeTheme(activeTheme);
+
+  console.log($mainDiv.height(), $mainDiv.width());
 
   // buildChart(mainDiv.css('height'), mainDiv.css('width'));
   //
@@ -61,6 +64,10 @@ $(document).ready(() => {
   });
 
   $closeSettings.click(() => {
+    $('.modal').hide();
+  });
+
+  $closeAbout.click(() => {
     $('.modal').hide();
   });
 
