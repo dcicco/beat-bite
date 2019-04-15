@@ -32,6 +32,10 @@ module.exports = {
         test: /\.(png|jpg|woff|woff2|eot|ttf|svg)$/,
         loader: 'file-loader'
       },
+      {
+        test: /fabric(\.min)?\.js$/,
+        use: 'exports-loader?fabric',
+      },
       // {
       //   test: /\.html$/,
       //   loader: 'html-loader?attrs[]=video:src'
