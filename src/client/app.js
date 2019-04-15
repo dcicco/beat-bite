@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import tone from 'tone';
+import fabric from 'fabric';
 
 $(document).ready(() => {
   console.log('ready');
@@ -13,18 +14,36 @@ $(document).ready(() => {
   var $aboutNav = $('.nav-hover:eq(3)');
   var $closeSettings = $('#closeSettings');
   var $closeAbout = $('#closeAbout');
+  var $canvas = $('#canvas');
 
   var activeTheme = localStorage.getItem('activeTheme');
   changeTheme(activeTheme);
 
-  console.log($mainDiv.height(), $mainDiv.width());
+  $canvas.attr({
+    width: $mainDiv.width(),
+    height: $mainDiv.height(),
+  });
 
-  // buildChart(mainDiv.css('height'), mainDiv.css('width'));
-  //
-  // function buildChart(heightPX, widthPX) {
-  //   var height = heightPX.replace('px', '');
-  //   var width = widthPX.replace('px', '');
-  // }
+  var tileW = $mainDiv.width() / 16;
+  var tileH = $mainDiv.height() / 14;
+
+  var rectOpt = {
+    width: tileW,
+    height: tileH,
+    fill: 'transparent',
+    stroke: 'white',
+    // strokeDashArray: [tileW, tileH],
+    strokeWidth: 1,
+    selectable: false,
+  }
+
+  var grid = new fabric.Canvas('canvas');
+
+  drawGrid();
+
+  grid.on('mouse:down', (e) => {
+    e.target.set('fill', 'red');
+  })
 
   $expandBars.click(() => {
     if (sidebarOpen === true) {
@@ -97,6 +116,21 @@ $(document).ready(() => {
     }
     else {
       console.log('dark');
+    }
+  }
+  var h;
+  var w;
+
+  function drawGrid() {
+    for (h = 0; h < $mainDiv.height(); h += tileH) {
+      for (w = 0; w < $mainDiv.width(); w += tileW) {
+        var tile = new fabric.Rect({
+          ...rectOpt,
+          top: h,
+          left: w,
+        });
+        grid.add(tile);
+      }
     }
   }
 });
