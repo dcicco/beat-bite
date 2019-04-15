@@ -118,12 +118,10 @@ $(document).ready(() => {
       console.log('dark');
     }
   }
-  var h;
-  var w;
 
   function drawGrid() {
-    for (h = 0; h < $mainDiv.height(); h += tileH) {
-      for (w = 0; w < $mainDiv.width(); w += tileW) {
+    for (var h = 0; h < $mainDiv.height(); h += tileH) {
+      for (var w = 0; w < $mainDiv.width(); w += tileW) {
         var tile = new fabric.Rect({
           ...rectOpt,
           top: h,
