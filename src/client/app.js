@@ -16,6 +16,10 @@ $(document).ready(() => {
   var $closeAbout = $('#closeAbout');
   var $canvas = $('#canvas');
 
+  var colors = {
+
+  };
+
   var activeTheme = localStorage.getItem('activeTheme');
   changeTheme(activeTheme);
 
@@ -28,22 +32,23 @@ $(document).ready(() => {
   var tileH = $mainDiv.height() / 14;
 
   var rectOpt = {
-    width: tileW,
-    height: tileH,
     fill: 'transparent',
     stroke: 'white',
-    // strokeDashArray: [tileW, tileH],
     strokeWidth: 1,
     selectable: false,
   }
 
   var grid = new fabric.Canvas('canvas');
 
-  drawGrid();
+  drawGrid(tileH, tileW);
+
+  grid.forEachObject((obj) => {
+    console.log(obj.note);
+  });
 
   grid.on('mouse:down', (e) => {
     e.target.set('fill', 'red');
-  })
+  });
 
   $expandBars.click(() => {
     if (sidebarOpen === true) {
@@ -119,13 +124,16 @@ $(document).ready(() => {
     }
   }
 
-  function drawGrid() {
-    for (var h = 0; h < $mainDiv.height(); h += tileH) {
-      for (var w = 0; w < $mainDiv.width(); w += tileW) {
+  function drawGrid(tH, tW) {
+    for (var h = 0; h < $mainDiv.height(); h += tH) {
+      for (var w = 0; w < $mainDiv.width(); w += tW) {
         var tile = new fabric.Rect({
           ...rectOpt,
+          width: tW,
+          height: tH,
           top: h,
           left: w,
+          note: 'asdf',
         });
         grid.add(tile);
       }
