@@ -17,8 +17,16 @@ $(document).ready(() => {
   var $canvas = $('#canvas');
 
   var colors = {
-
+    'B': 'red',
+    'A': 'blue',
+    'C': 'green',
+    'D': 'yellow',
+    'E': 'pink',
+    'F': 'orange',
+    'G': 'cyan',
   };
+
+  var notes = ['B', 'A', 'G', 'F', 'E', 'D', 'C', 'B', 'A', 'G', 'F', 'E', 'D', 'C'];
 
   var activeTheme = localStorage.getItem('activeTheme');
   changeTheme(activeTheme);
@@ -43,8 +51,9 @@ $(document).ready(() => {
   drawGrid(tileH, tileW);
 
   grid.on('mouse:down', (e) => {
-    e.target.set('fill', 'red');
-    console.log(e.target.note);
+    var curNote = e.target.note.slice(0, 1);
+    e.target.set('fill', colors[curNote]);
+    console.log(e.target.note, e.target.pitch);
   });
 
   $expandBars.click(() => {
@@ -122,7 +131,6 @@ $(document).ready(() => {
   }
 
   function drawGrid(tH, tW) {
-    var notes = ['B', 'A', 'G', 'F', 'E', 'D', 'C', 'B', 'A', 'G', 'F', 'E', 'D', 'C'];
     var i = 0;
     for (var h = 0; h < $mainDiv.height(); h += tH) {
       var ii = 1;
@@ -137,6 +145,12 @@ $(document).ready(() => {
         /* this is really confusing but 'i' is the note
          and 'ii' is the number of the note horizontally */
         tile.set('note', `${notes[i]}${ii}`);
+        if (i + 1 <= 7) {
+          tile.set('pitch', '2');
+        }
+        else if (i + 1 > 7) {
+          tile.set('pitch', '1');
+        }
         grid.add(tile);
         ii++;
       }
