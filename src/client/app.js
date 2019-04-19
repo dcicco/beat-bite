@@ -122,9 +122,10 @@ $(document).ready(() => {
   }
 
   function drawGrid(tH, tW) {
+    var notes = ['B', 'A', 'G', 'F', 'E', 'D', 'C', 'B', 'A', 'G', 'F', 'E', 'D', 'C'];
     var i = 0;
-    var ii = 1;
     for (var h = 0; h < $mainDiv.height(); h += tH) {
+      var ii = 1;
       for (var w = 0; w < $mainDiv.width(); w += tW) {
         var tile = new fabric.Rect({
           ...rectOpt,
@@ -133,12 +134,9 @@ $(document).ready(() => {
           top: h,
           left: w,
         });
-        if (i = 1) {
-          tile.set('note', `B${ii}`);
-        }
-        else if (i = 2) {
-          tile.set('note', `A${ii}`);
-        }
+        /* this is really confusing but 'i' is the note
+         and 'ii' is the number of the note horizontally */
+        tile.set('note', `${notes[i]}${ii}`);
         grid.add(tile);
         ii++;
       }
