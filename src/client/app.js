@@ -42,12 +42,9 @@ $(document).ready(() => {
 
   drawGrid(tileH, tileW);
 
-  grid.forEachObject((obj) => {
-    console.log(obj.note);
-  });
-
   grid.on('mouse:down', (e) => {
     e.target.set('fill', 'red');
+    console.log(e.target.note);
   });
 
   $expandBars.click(() => {
@@ -125,6 +122,8 @@ $(document).ready(() => {
   }
 
   function drawGrid(tH, tW) {
+    var i = 0;
+    var ii = 1;
     for (var h = 0; h < $mainDiv.height(); h += tH) {
       for (var w = 0; w < $mainDiv.width(); w += tW) {
         var tile = new fabric.Rect({
@@ -133,10 +132,17 @@ $(document).ready(() => {
           height: tH,
           top: h,
           left: w,
-          note: 'asdf',
         });
+        if (i = 1) {
+          tile.set('note', `B${ii}`);
+        }
+        else if (i = 2) {
+          tile.set('note', `A${ii}`);
+        }
         grid.add(tile);
+        ii++;
       }
+      i++;
     }
   }
 });
