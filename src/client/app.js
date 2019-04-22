@@ -4,6 +4,7 @@ import fabric from 'fabric';
 
 $(document).ready(() => {
   console.log('ready');
+  tone.Transport.start();
   var sidebarOpen = true;
   var $expandBars = $('.bars');
   var $sideBar = $('#sideBar');
@@ -58,9 +59,8 @@ $(document).ready(() => {
     }
     else if (e.target.get('fill') === 'transparent') {
       const curNote = e.target.note.slice(0, 1);
-      const curPitch = parseInt(e.target.pitch) + 2;
       e.target.set('fill', colors[curNote]);
-      synth.triggerAttackRelease(`${curNote}${curPitch}`, '8n');
+      playTone(e.target);
     }
     console.log(e.target.note, e.target.pitch);
   });
@@ -169,7 +169,9 @@ $(document).ready(() => {
     }
   }
 
-  function playTone(tile) {
-
+  function playTone(tile, time) {
+    const curNote = tile.note.slice(0, 1);
+    const curPitch = parseInt(tile.pitch) + 2;
+    synth.triggerAttackRelease(`${curNote}${curPitch}`, '8n', time);
   }
 });
