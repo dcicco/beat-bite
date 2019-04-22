@@ -32,7 +32,19 @@ $(document).ready(() => {
   var activeTheme = localStorage.getItem('activeTheme');
   changeTheme(activeTheme);
 
-  var synth = new tone.Synth().toMaster();
+  var synth = new tone.Synth({
+    'oscillator': {
+      'type': 'sine',
+      'modulationFrequency': 0.2
+    },
+    'envelope': {
+      'attack': 0.01,
+      'decay': 0.7,
+      'sustain': 0.14,
+      'release': 1.2,
+    },
+    'volume': -5,
+  }).toMaster();
 
   $canvas.attr({
     width: $mainDiv.width(),
@@ -155,13 +167,14 @@ $(document).ready(() => {
          and 'ii' is the number of the note horizontally */
         tile.set('note', `${notes[i]}${ii}`);
         /* this is setting either the top octave or the
-         bottom octave for clarity */
+         bottom octave */
         if (i + 1 <= 7) {
           tile.set('pitch', '2');
         }
         else if (i + 1 > 7) {
           tile.set('pitch', '1');
         }
+        // add the tile & data to the grid
         grid.add(tile);
         ii++;
       }
