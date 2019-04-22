@@ -5,7 +5,6 @@ import fabric from 'fabric';
 $(document).ready(() => {
   console.log('ready');
   var sidebarOpen = true;
-  // var activeTheme; // 1 = dark; 2 = light; 3 = contrast;
   var $expandBars = $('.bars');
   var $sideBar = $('#sideBar');
   var $navItems = $('#navItems');
@@ -17,19 +16,22 @@ $(document).ready(() => {
   var $canvas = $('#canvas');
 
   var colors = {
-    'B': 'red',
-    'A': 'blue',
-    'C': 'green',
-    'D': 'yellow',
-    'E': 'pink',
-    'F': 'orange',
-    'G': 'cyan',
+    'C': 'rgb(198, 115, 47)',
+    'D': 'rgb(198, 72, 47)',
+    'E': 'rgb(198, 47, 55)',
+    'F': 'rgb(198, 47, 103)',
+    'G': 'rgb(198, 47, 198)',
+    'A': 'rgb(133, 47, 198)',
+    'B': 'rgb(85, 47, 198)',
   };
 
   var notes = ['B', 'A', 'G', 'F', 'E', 'D', 'C', 'B', 'A', 'G', 'F', 'E', 'D', 'C'];
 
+  // 1 = dark; 2 = light; 3 = contrast;
   var activeTheme = localStorage.getItem('activeTheme');
   changeTheme(activeTheme);
+
+  var synth = new tone.Synth().toMaster();
 
   $canvas.attr({
     width: $mainDiv.width(),
@@ -51,8 +53,15 @@ $(document).ready(() => {
   drawGrid(tileH, tileW);
 
   grid.on('mouse:down', (e) => {
-    var curNote = e.target.note.slice(0, 1);
-    e.target.set('fill', colors[curNote]);
+    if (e.target.get('fill') !== 'transparent') {
+      e.target.set('fill', 'transparent');
+    }
+    else if (e.target.get('fill') === 'transparent') {
+      const curNote = e.target.note.slice(0, 1);
+      const curPitch = parseInt(e.target.pitch) + 2;
+      e.target.set('fill', colors[curNote]);
+      synth.triggerAttackRelease(`${curNote}${curPitch}`, '8n');
+    }
     console.log(e.target.note, e.target.pitch);
   });
 
@@ -103,7 +112,7 @@ $(document).ready(() => {
 
   $('.modal-button').click((e) => {
     console.log(e.target.id);
-    let theme = e.target.id;
+    const theme = e.target.id;
     changeTheme(theme);
   });
 
@@ -145,6 +154,8 @@ $(document).ready(() => {
         /* this is really confusing but 'i' is the note
          and 'ii' is the number of the note horizontally */
         tile.set('note', `${notes[i]}${ii}`);
+        /* this is setting either the top octave or the
+         bottom octave for clarity */
         if (i + 1 <= 7) {
           tile.set('pitch', '2');
         }
@@ -156,5 +167,9 @@ $(document).ready(() => {
       }
       i++;
     }
+  }
+
+  function playTone(tile) {
+
   }
 });
