@@ -15,6 +15,7 @@ $(document).ready(() => {
   var $closeSettings = $('#closeSettings');
   var $closeAbout = $('#closeAbout');
   var $canvas = $('#canvas');
+  var $playBtn = $('#playBtn');
 
   var colors = {
     'C': 'rgb(198, 115, 47)',
@@ -123,7 +124,6 @@ $(document).ready(() => {
   });
 
   $('.modal-button').click((e) => {
-    console.log(e.target.id);
     const theme = e.target.id;
     changeTheme(theme);
   });
@@ -187,4 +187,25 @@ $(document).ready(() => {
     const curPitch = parseInt(tile.pitch) + 2;
     synth.triggerAttackRelease(`${curNote}${curPitch}`, '8n', time);
   }
+
+  function playSeq() {
+    var noteArr = [];
+    var sortedArr = [];
+    grid.forEachObject((tile) => {
+      if (tile.get('fill') !== 'transparent') {
+        const curNote = tile.note.slice(0, 1);
+        const curPitch = parseInt(tile.pitch) + 2;
+        noteArr.unshift(`${curNote}${curPitch}`);
+      }
+    });
+    console.log(noteArr);
+    var seq = new tone.Sequence((time, note) => {
+      synth.triggerAttackRelease(note, '4n');
+    }, noteArr, '4n');
+    seq.start();
+  }
+
+  $playBtn.click(() => {
+    playSeq();
+  });
 });
