@@ -66,6 +66,10 @@ $(document).ready(() => {
 
   drawGrid(tileH, tileW);
 
+  grid.forEachObject((obj) => {
+    console.log(obj.note);
+  });
+
   grid.on('mouse:down', (e) => {
     if (e.target.get('fill') !== 'transparent') {
       e.target.set('fill', 'transparent');
@@ -152,10 +156,10 @@ $(document).ready(() => {
   }
 
   function drawGrid(tH, tW) {
-    var i = 0;
-    for (var h = 0; h < $mainDiv.height(); h += tH) {
-      var ii = 1;
-      for (var w = 0; w < $mainDiv.width(); w += tW) {
+    var ii = 1;
+    for (var w = 0; w < $mainDiv.width(); w += tW) {
+      var i = 0;
+      for (var h = 0; h < $mainDiv.height(); h += tH) {
         var tile = new fabric.Rect({
           ...rectOpt,
           width: tW,
@@ -176,9 +180,9 @@ $(document).ready(() => {
         }
         // add the tile & data to the grid
         grid.add(tile);
-        ii++;
+        i++;
       }
-      i++;
+      ii++;
     }
   }
 
@@ -195,12 +199,12 @@ $(document).ready(() => {
       if (tile.get('fill') !== 'transparent') {
         const curNote = tile.note.slice(0, 1);
         const curPitch = parseInt(tile.pitch) + 2;
-        noteArr.unshift(`${curNote}${curPitch}`);
+        noteArr.push(`${curNote}${curPitch}`);
       }
     });
     console.log(noteArr);
     var seq = new tone.Sequence((time, note) => {
-      synth.triggerAttackRelease(note, '4n');
+      synth.triggerAttackRelease(note, '8n');
     }, noteArr, '4n');
     seq.start();
   }
