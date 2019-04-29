@@ -6,16 +6,20 @@ $(document).ready(() => {
   console.log('ready');
   tone.Transport.start();
   var sidebarOpen = true;
+  var instrumentsOpen = true;
   var $expandBars = $('.bars');
   var $sideBar = $('#sideBar');
   var $navItems = $('#navItems');
   var $mainDiv = $('#mainContainer');
+  var $instruments = $('#instruments');
   var $settingsNav = $('.nav-hover:eq(2)');
   var $aboutNav = $('.nav-hover:eq(3)');
   var $closeSettings = $('#closeSettings');
   var $closeAbout = $('#closeAbout');
   var $canvas = $('#canvas');
   var $playBtn = $('#playBtn');
+  var $piano = $('.dropdown-item:eq(0)');
+  var $synth = $('.dropdown-item:eq(1)');
 
   var colors = {
     'C': 'rgb(198, 115, 47)',
@@ -32,6 +36,8 @@ $(document).ready(() => {
   // 1 = dark; 2 = light; 3 = contrast;
   var activeTheme = localStorage.getItem('activeTheme');
   changeTheme(activeTheme);
+
+  $piano.focus();
 
   var synth = new tone.Synth({
     'oscillator': {
@@ -66,9 +72,9 @@ $(document).ready(() => {
 
   drawGrid(tileH, tileW);
 
-  grid.forEachObject((obj) => {
-    console.log(obj.note);
-  });
+  // grid.forEachObject((obj) => {
+  //   console.log(obj.note);
+  // });
 
   grid.on('mouse:down', (e) => {
     if (e.target.get('fill') !== 'transparent') {
@@ -91,6 +97,15 @@ $(document).ready(() => {
     }
   });
 
+  $instruments.click(() => {
+    if (instrumentsOpen === true) {
+      closeInstruments();
+    }
+    else {
+      openInstruments();
+    }
+  })
+
   function openSidebar() {
     $('.nav-header').show();
     $('#shadowSideBar, #sideBar').css('width', '270px');
@@ -103,6 +118,14 @@ $(document).ready(() => {
     $('.nav-icon').css('padding', '20px 0 20px 28px');
     $('#shadowSideBar, #sideBar').css('width', '80px');
     sidebarOpen = false;
+  }
+
+  function openIntruments() {
+
+  }
+
+  function closeInstruments() {
+    
   }
 
   $settingsNav.click(() => {
@@ -183,6 +206,19 @@ $(document).ready(() => {
         i++;
       }
       ii++;
+    }
+  }
+
+  $('.dropdown-item').click((e) => {
+    console.log(e.target.innerHTML);
+  });
+
+  function loadSynth(selected) {
+    if (selected.innerHTML === 'PIANO') {
+      // load piano
+    }
+    else if (selected.innerHTML === 'SYNTH') {
+      //load synth
     }
   }
 

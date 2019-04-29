@@ -49,6 +49,22 @@
   }
 }
 
+#instrumentList {
+    li {
+      padding: 5px 0 5px 68px;
+      display: flex;
+      box-sizing: content-box;
+      outline: 0;
+      color: inherit;
+
+      &:focus {
+        border-left: 5px solid $highlight-blue;
+        background-color: rgba($highlight-blue, .2);
+      }
+    }
+    box-shadow: 0px 0px transparent !important;
+}
+
 .nav-icon {
   padding: 10px 0 10px 28px;
   font-size: 14pt;
