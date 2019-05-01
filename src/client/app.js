@@ -4,7 +4,6 @@ import fabric from 'fabric';
 
 $(document).ready(() => {
   console.log('ready');
-  tone.Transport.start();
 });
 
 var sidebarOpen = true;
@@ -41,10 +40,15 @@ changeTheme(activeTheme);
 
 $piano.focus();
 
-var synth = new tone.Synth({
+var synth = new tone.PolySynth({
+  polyphony: 4,
+  voice: tone.Synth,
+}).toMaster();
+
+synth.set({
   'oscillator': {
     'type': 'sine',
-    'modulationFrequency': 0.2
+    'modulationFrequency': 0.2,
   },
   'envelope': {
     'attack': 0.01,
@@ -53,7 +57,7 @@ var synth = new tone.Synth({
     'release': 1.2,
   },
   'volume': -5,
-}).toMaster();
+});
 
 $canvas.attr({
   width: $mainDiv.width(),
@@ -73,10 +77,6 @@ var rectOpt = {
 var grid = new fabric.Canvas('canvas');
 
 drawGrid(tileH, tileW);
-
-// grid.forEachObject((obj) => {
-//   console.log(obj.note);
-// });
 
 grid.on('mouse:down', (e) => {
   if (e.target.get('fill') !== 'transparent') {
@@ -110,6 +110,7 @@ $instruments.click(() => {
 
 function openSidebar() {
   $('.nav-header').show();
+  $('#instrumentList').show();
   $('#shadowSideBar, #sideBar').css('width', '270px');
   $('.nav-icon').css('padding', '10px 0 10px 28px');
   sidebarOpen = true;
@@ -117,6 +118,7 @@ function openSidebar() {
 
 function closeSidebar() {
   $('.nav-header:not(#naming)').hide();
+  $('#instrumentList').hide();
   $('.nav-icon').css('padding', '20px 0 20px 28px');
   $('#shadowSideBar, #sideBar').css('width', '80px');
   sidebarOpen = false;
@@ -231,22 +233,24 @@ function playTone(tile, time) {
 }
 
 function playSeq() {
+  tone.Transport.start();
   var noteArr = [];
+  var colArr = [];
   var tiles = grid._objects;
-  for (var i = 0; i < 14; i++) {
-    console.log(tiles[i].get('fill'));
+  for (let i = 0; i < 224; i++) {
+    if (tiles[i].fill !== 'transparent') {
+      const curNote = tiles[i].note.slice(0, 1);
+      const curPitch = parseInt(tiles[i].pitch) + 2;
+      colArr.push(`${curNote}${curPitch}`);
+    }
+    console.log(colArr);
   }
-
-    // if (tile.get('fill') !== 'transparent') {
-    //   const curNote = tile.note.slice(0, 1);
-    //   const curPitch = parseInt(tile.pitch) + 2;
-    //   noteArr.push(`${curNote}${curPitch}`);
-    // }
-  // console.log(noteArr);
-  var seq = new tone.Sequence((time, note) => {
-    synth.triggerAttackRelease(note, '8n');
-  }, noteArr, '4n');
-  seq.start();
+  noteArr.push(colArr);
+  console.log(noteArr);
+  let seq = new tone.Sequence((time, note) => {
+    synth.triggerAttackRelease(note, '4n', time);
+  }, noteArr);
+  seq.start(0);
 }
 
 $playBtn.click(() => {
