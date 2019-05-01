@@ -232,15 +232,17 @@ function playTone(tile, time) {
 
 function playSeq() {
   var noteArr = [];
-  var sortedArr = [];
-  grid.forEachObject((tile) => {
-    if (tile.get('fill') !== 'transparent') {
-      const curNote = tile.note.slice(0, 1);
-      const curPitch = parseInt(tile.pitch) + 2;
-      noteArr.push(`${curNote}${curPitch}`);
-    }
-  });
-  console.log(noteArr);
+  var tiles = grid._objects;
+  for (var i = 0; i < 14; i++) {
+    console.log(tiles[i].get('fill'));
+  }
+
+    // if (tile.get('fill') !== 'transparent') {
+    //   const curNote = tile.note.slice(0, 1);
+    //   const curPitch = parseInt(tile.pitch) + 2;
+    //   noteArr.push(`${curNote}${curPitch}`);
+    // }
+  // console.log(noteArr);
   var seq = new tone.Sequence((time, note) => {
     synth.triggerAttackRelease(note, '8n');
   }, noteArr, '4n');
