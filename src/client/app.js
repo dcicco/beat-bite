@@ -6,6 +6,8 @@ $(document).ready(() => {
   console.log('ready');
 });
 
+tone.Transport.bpm.value = 90;
+
 var sidebarOpen = true;
 var instrumentsOpen = true;
 var $expandBars = $('.bars');
@@ -232,10 +234,30 @@ function playTone(tile, time) {
   synth.triggerAttackRelease(`${curNote}${curPitch}`, '8n', time);
 }
 
+let noteObj = [
+  { 'time': '0', 'note': [] },
+  { 'time': '0:1', 'note': [] },
+  { 'time': '0:2', 'note': [] },
+  { 'time': '0:3', 'note': [] },
+  { 'time': '0:4', 'note': [] },
+  { 'time': '0:5', 'note': [] },
+  { 'time': '0:6', 'note': [] },
+  { 'time': '0:7', 'note': [] },
+  { 'time': '0:8', 'note': [] },
+  { 'time': '0:9', 'note': [] },
+  { 'time': '0:10', 'note': [] },
+  { 'time': '0:11', 'note': [] },
+  { 'time': '0:12', 'note': [] },
+  { 'time': '0:13', 'note': [] },
+  { 'time': '0:14', 'note': [] },
+  { 'time': '0:15', 'note': [] },
+];
+
 function playSeq() {
-  tone.Transport.start();
-  var noteArr = [];
-  var colArr = [];
+  let colArr = [];
+  let colNum = 0;
+  let emptyNum = 0;
+  let objNum = 0;
   var tiles = grid._objects;
   for (let i = 0; i < 224; i++) {
     if (tiles[i].fill !== 'transparent') {
@@ -243,14 +265,34 @@ function playSeq() {
       const curPitch = parseInt(tiles[i].pitch) + 2;
       colArr.push(`${curNote}${curPitch}`);
     }
-    console.log(colArr);
+    else if (tiles[i].fill === 'transparent') {
+      emptyNum += 1;
+    }
+    colNum += 1;
+    if (colNum === 14 && emptyNum === 14) {
+      objNum += 1;
+      emptyNum = 0;
+      colNum = 0;
+      colArr = [];
+    }
+    else if (colNum === 14 && emptyNum !== 14) {
+      noteObj[objNum].note = colArr;
+      objNum += 1;
+      emptyNum = 0;
+      colNum = 0;
+      colArr = [];
+    }
   }
-  noteArr.push(colArr);
-  console.log(noteArr);
-  let seq = new tone.Sequence((time, note) => {
-    synth.triggerAttackRelease(note, '4n', time);
-  }, noteArr);
-  seq.start(0);
+  console.log(noteObj);
+  tone.Transport.start();
+  // let seq = new tone.Sequence((time, note) => {
+  //   synth.triggerAttackRelease(note, '4n');
+  // }, noteArr, '4n');
+  // seq.start(0);
+  let part = new tone.Part((time, value) => {
+    console.log(value.note);
+    synth.triggerAttackRelease(value.note, '4n', time);
+  }, noteObj).start(0);
 }
 
 $playBtn.click(() => {
