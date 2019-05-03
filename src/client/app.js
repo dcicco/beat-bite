@@ -9,7 +9,7 @@ $(document).ready(() => {
 tone.Transport.bpm.value = 90;
 
 var sidebarOpen = true;
-var instrumentsOpen = true;
+var instrumentsOpen = false;
 var $expandBars = $('.bars');
 var $sideBar = $('#sideBar');
 var $navItems = $('#navItems');
@@ -36,6 +36,25 @@ var colors = {
 
 var notes = ['B', 'A', 'G', 'F', 'E', 'D', 'C', 'B', 'A', 'G', 'F', 'E', 'D', 'C'];
 
+$canvas.attr({
+  width: $mainDiv.width(),
+  height: $mainDiv.height(),
+});
+
+var tileW = $mainDiv.width() / 16;
+var tileH = $mainDiv.height() / 14;
+
+let rectOpt = {
+  fill: 'transparent',
+  stroke: 'rgba(20, 20, 22, 1)',
+  strokeWidth: 1,
+  selectable: false,
+}
+
+var grid = new fabric.Canvas('canvas');
+
+drawGrid(tileH, tileW);
+
 // 1 = dark; 2 = light; 3 = contrast;
 var activeTheme = localStorage.getItem('activeTheme');
 changeTheme(activeTheme);
@@ -61,25 +80,6 @@ synth.set({
   'volume': -5,
 });
 
-$canvas.attr({
-  width: $mainDiv.width(),
-  height: $mainDiv.height(),
-});
-
-var tileW = $mainDiv.width() / 16;
-var tileH = $mainDiv.height() / 14;
-
-var rectOpt = {
-  fill: 'transparent',
-  stroke: 'white',
-  strokeWidth: 1,
-  selectable: false,
-}
-
-var grid = new fabric.Canvas('canvas');
-
-drawGrid(tileH, tileW);
-
 grid.on('mouse:down', (e) => {
   if (e.target.get('fill') !== 'transparent') {
     e.target.set('fill', 'transparent');
@@ -103,10 +103,12 @@ $expandBars.click(() => {
 
 $instruments.click(() => {
   if (instrumentsOpen === true) {
-    closeInstruments();
+    $('#instrumentList').hide();
+    instrumentsOpen === false;
   }
-  else {
-    openInstruments();
+  else if (instrumentsOpen === false) {
+    $('#instrumentList').show();
+    instrumentsOpen === true;
   }
 })
 
@@ -124,14 +126,6 @@ function closeSidebar() {
   $('.nav-icon').css('padding', '20px 0 20px 28px');
   $('#shadowSideBar, #sideBar').css('width', '80px');
   sidebarOpen = false;
-}
-
-function openIntruments() {
-
-}
-
-function closeInstruments() {
-
 }
 
 $settingsNav.click(() => {
@@ -167,6 +161,10 @@ function changeTheme(theme) {
       $(obj).removeClass('t-light');
       $(obj).addClass('t-dark');
     });
+    grid.forEachObject((rect) => {
+      rect.set('stroke', 'rgba(242, 244, 244, 1)');
+    });
+    grid.renderAll();
     localStorage.setItem('activeTheme', '1')
   }
   else if (theme === 'lightTheme' || theme === '2') {
@@ -174,6 +172,10 @@ function changeTheme(theme) {
       $(obj).removeClass('t-dark');
       $(obj).addClass('t-light');
     });
+    grid.forEachObject((rect) => {
+      rect.set('stroke', 'rgba(20, 20, 22, 1)');
+    });
+    grid.renderAll();
     localStorage.setItem('activeTheme', '2')
   }
   else if (theme === 'conTheme') {
@@ -258,7 +260,7 @@ function playSeq() {
   let colNum = 0;
   let emptyNum = 0;
   let objNum = 0;
-  var tiles = grid._objects;
+  let tiles = grid._objects;
   for (let i = 0; i < 224; i++) {
     if (tiles[i].fill !== 'transparent') {
       const curNote = tiles[i].note.slice(0, 1);
@@ -285,10 +287,6 @@ function playSeq() {
   }
   console.log(noteObj);
   tone.Transport.start();
-  // let seq = new tone.Sequence((time, note) => {
-  //   synth.triggerAttackRelease(note, '4n');
-  // }, noteArr, '4n');
-  // seq.start(0);
   let part = new tone.Part((time, value) => {
     console.log(value.note);
     synth.triggerAttackRelease(value.note, '4n', time);
