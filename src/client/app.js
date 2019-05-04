@@ -1,3 +1,4 @@
+import './app.scss';
 import $ from 'jquery';
 import tone from 'tone';
 import fabric from 'fabric';
@@ -6,25 +7,27 @@ $(document).ready(() => {
   console.log('ready');
 });
 
-tone.Transport.bpm.value = 90;
+tone.Transport.bpm.value = 120;
 
-var sidebarOpen = true;
-var instrumentsOpen = false;
-var $expandBars = $('.bars');
-var $sideBar = $('#sideBar');
-var $navItems = $('#navItems');
-var $mainDiv = $('#mainContainer');
-var $instruments = $('#instruments');
-var $settingsNav = $('.nav-hover:eq(2)');
-var $aboutNav = $('.nav-hover:eq(3)');
-var $closeSettings = $('#closeSettings');
-var $closeAbout = $('#closeAbout');
-var $canvas = $('#canvas');
-var $playBtn = $('#playBtn');
-var $piano = $('.dropdown-item:eq(0)');
-var $synth = $('.dropdown-item:eq(1)');
+let sidebarOpen = true;
+let instrumentsOpen = false;
+let isPlaying = false;
+let firstPlay = true;
+const $expandBars = $('.bars');
+const $sideBar = $('#sideBar');
+const $navItems = $('#navItems');
+const $mainDiv = $('#mainContainer');
+const $instruments = $('#instruments');
+const $settingsNav = $('.nav-hover:eq(2)');
+const $aboutNav = $('.nav-hover:eq(3)');
+const $closeSettings = $('#closeSettings');
+const $closeAbout = $('#closeAbout');
+const $canvas = $('#canvas');
+const $playBtn = $('#playBtn');
+const $piano = $('.dropdown-item:eq(0)');
+const $synth = $('.dropdown-item:eq(1)');
 
-var colors = {
+const colors = {
   'C': 'rgb(198, 115, 47)',
   'D': 'rgb(198, 72, 47)',
   'E': 'rgb(198, 47, 55)',
@@ -34,7 +37,7 @@ var colors = {
   'B': 'rgb(85, 47, 198)',
 };
 
-var notes = ['B', 'A', 'G', 'F', 'E', 'D', 'C', 'B', 'A', 'G', 'F', 'E', 'D', 'C'];
+const notes = ['B', 'A', 'G', 'F', 'E', 'D', 'C', 'B', 'A', 'G', 'F', 'E', 'D', 'C'];
 
 $canvas.attr({
   width: $mainDiv.width(),
@@ -44,7 +47,7 @@ $canvas.attr({
 var tileW = $mainDiv.width() / 16;
 var tileH = $mainDiv.height() / 14;
 
-let rectOpt = {
+const rectOpt = {
   fill: 'transparent',
   stroke: 'rgba(20, 20, 22, 1)',
   strokeWidth: 1,
@@ -89,7 +92,6 @@ grid.on('mouse:down', (e) => {
     e.target.set('fill', colors[curNote]);
     playTone(e.target);
   }
-  console.log(e.target.note, e.target.pitch);
 });
 
 $expandBars.click(() => {
@@ -104,13 +106,13 @@ $expandBars.click(() => {
 $instruments.click(() => {
   if (instrumentsOpen === true) {
     $('#instrumentList').hide();
-    instrumentsOpen === false;
+    instrumentsOpen = false;
   }
   else if (instrumentsOpen === false) {
     $('#instrumentList').show();
-    instrumentsOpen === true;
+    instrumentsOpen = true;
   }
-})
+});
 
 function openSidebar() {
   $('.nav-header').show();
@@ -187,9 +189,9 @@ function changeTheme(theme) {
 }
 
 function drawGrid(tH, tW) {
-  var ii = 1;
+  let ii = 1;
   for (var w = 0; w < $mainDiv.width(); w += tW) {
-    var i = 0;
+    let i = 0;
     for (var h = 0; h < $mainDiv.height(); h += tH) {
       var tile = new fabric.Rect({
         ...rectOpt,
@@ -218,15 +220,41 @@ function drawGrid(tH, tW) {
 }
 
 $('.dropdown-item').click((e) => {
-  console.log(e.target.innerHTML);
+  loadSynth(e.target);
 });
 
 function loadSynth(selected) {
   if (selected.innerHTML === 'PIANO') {
-    // load piano
+    synth.set({
+      'oscillator': {
+        'type': 'sine',
+        'modulationFrequency': 0.2,
+        'harmonicity': 1.0,
+      },
+      'envelope': {
+        'attack': 0.01,
+        'decay': 0.7,
+        'sustain': 0.14,
+        'release': 1.2,
+      },
+      'volume': -5,
+    });
   }
   else if (selected.innerHTML === 'SYNTH') {
-    //load synth
+    synth.set({
+      'oscillator': {
+        'type': 'square',
+        'modulationFrequency': 0.2,
+        'harmonicity': 1.0,
+      },
+      'envelope': {
+        'attack': 0.02,
+        'decay': 0.2,
+        'sustain': 0.2,
+        'release': 1.5,
+      },
+      'volume': -8,
+    });
   }
 }
 
@@ -255,12 +283,14 @@ let noteObj = [
   { 'time': '0:15', 'note': [] },
 ];
 
-function playSeq() {
+let seq;
+
+function buildSeq() {
   let colArr = [];
   let colNum = 0;
   let emptyNum = 0;
   let objNum = 0;
-  let tiles = grid._objects;
+  const tiles = grid._objects;
   for (let i = 0; i < 224; i++) {
     if (tiles[i].fill !== 'transparent') {
       const curNote = tiles[i].note.slice(0, 1);
@@ -285,14 +315,32 @@ function playSeq() {
       colArr = [];
     }
   }
-  console.log(noteObj);
-  tone.Transport.start();
-  let part = new tone.Part((time, value) => {
+  seq = new tone.Sequence((time, value) => {
     console.log(value.note);
     synth.triggerAttackRelease(value.note, '4n', time);
-  }, noteObj).start(0);
+  }, noteObj);
+}
+
+function playSeq() {
+  tone.Transport.start();
+  seq.start(0);
 }
 
 $playBtn.click(() => {
-  playSeq();
+  if (!isPlaying) {
+    if (firstPlay) {
+      buildSeq();
+      firstPlay = false;
+    }
+    $playBtn.removeClass('fa-play');
+    $playBtn.addClass('fa-pause');
+    isPlaying = true;
+    playSeq();
+  }
+  else if (isPlaying) {
+    $playBtn.removeClass('fa-pause');
+    $playBtn.addClass('fa-play');
+    isPlaying = false;
+    tone.Transport.pause();
+  }
 });
