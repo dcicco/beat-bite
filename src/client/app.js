@@ -332,7 +332,7 @@ function drawGrid(tH, tW) {
       else if (i + 1 > 7) {
         tile.set('pitch', '1');
       }
-      // add the tile & data to the grid
+      /* add the tile & data to the grid */
       grid.add(tile);
       i++;
     }
@@ -439,7 +439,7 @@ function playTone(tile, time) {
   }
 }
 
-/* noteObj is the static datastructure being used to place all
+/* noteObj is the static data structure being used to place all
   the notes in the sequence based on their time and how many are
   selected in the same measure.
  */
