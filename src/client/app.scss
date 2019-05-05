@@ -10,6 +10,11 @@
   background-image: url('./assets/images/beat-bite-logo.svg');
 }
 
+a:link, a:visited {
+  color: $highlight-red;
+  text-decoration: none;
+}
+
 .modal #logo {
   position: relative;
   float: left;
@@ -113,6 +118,7 @@
   left: 20px;
   font-size: 28pt;
   color: inherit;
+  text-shadow: 0px 0px 10px black;
   transition: transform 0.3s;
 
   &:hover {
@@ -189,6 +195,15 @@
 
 .modal-body {
   padding: 15px;
+
+  p {
+    line-height: 25px;
+  }
+
+  p:nth-child(3) {
+    padding-top: 25px;
+    font-style: italic;
+  }
 }
 
 .modal-button {
@@ -312,6 +327,7 @@
   position: relative;
   color: inherit;
   line-height: 80px;
+  text-shadow: 0px 0px 10px black;
   cursor: pointer;
   transition: color 0.3s;
   transition-timing-function: ease-in-out;
@@ -330,6 +346,7 @@
   color: inherit;
   cursor: pointer;
   outline: none;
+  text-shadow: 0px 0px 10px black;
   transition: transform .7s, color .3s;
   transition-timing-function: ease-in-out;
 
