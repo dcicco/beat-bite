@@ -25,6 +25,13 @@
   .nav-header {
     text-shadow: 0 0 8px lighten($dark, 20%);;
   }
+  .sliders,  {
+    background: $dark;
+
+    &::-webkit-slider-thumb {
+      background: $dark;
+    }
+  }
 }
 
 #root #mainContainer.t-light {
@@ -57,6 +64,13 @@
   }
   .nav-header {
     text-shadow: 0 0 10px black;
+  }
+  .sliders,  {
+    background: $light;
+
+    &::-webkit-slider-thumb {
+      background: $light;
+    }
   }
 }
 

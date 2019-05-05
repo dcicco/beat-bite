@@ -217,13 +217,97 @@
   box-shadow: 0px 0px 10px;
 }
 
-#playBtn {
-  font-size: 24pt;
-  display: flex;
+.sliders {
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  background: inherit;
+  border-radius: 5px;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background: inherit;
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    box-shadow: 0px 0px 10px black;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      background: $highlight-red !important;
+    }
+  }
+  &:focus {
+    outline: none;
+
+    &::-webkit-slider-thumb {
+      background: $highlight-red !important;
+    }
+  }
+}
+
+%slider {
+  margin: 35px 0 35px 0;
+  width: 300px;
+  height: 10px;
   position: absolute;
-  left: 50%;
+}
+
+%botIcons {
+  font-size: 20pt;
+  color: inherit;
+  position: absolute;
+  line-height: 80px;
+}
+
+.controlItems {
+  width: 75%;
+  height: 80px;
+  display: block;
+  position: absolute;
+  margin: 0 15% 0 25%;
+}
+
+#bpm {
+  margin-right: 7%;
+  float: left;
+  width: 400px;
+  height: 80px;
+}
+
+#vol {
+  margin-left: 10%;
+  float: left;
+  width: 400px;
+  height: 80px;
+}
+
+#bpmSlider {
+  @extend %slider;
+  margin-left: 50px;
+}
+
+#volSlider {
+  @extend %slider;
+  margin-left: 50px;
+}
+
+#volIcon {
+  @extend %botIcons;
+}
+
+#bpmIcon {
+  @extend %botIcons;
+}
+
+#playBtn {
+  margin: 0 25px 0 25px;
+  font-size: 24pt;
+  float: left;
+  position: relative;
   color: inherit;
   line-height: 80px;
+  cursor: pointer;
 }
 
 #mainContainer {

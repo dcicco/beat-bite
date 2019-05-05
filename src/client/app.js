@@ -13,6 +13,8 @@ let sidebarOpen = true;
 let instrumentsOpen = false;
 let isPlaying = false;
 let firstPlay = true;
+let seq;
+let selectedInst;
 const $expandBars = $('.bars');
 const $sideBar = $('#sideBar');
 const $navItems = $('#navItems');
@@ -26,6 +28,8 @@ const $canvas = $('#canvas');
 const $playBtn = $('#playBtn');
 const $piano = $('.dropdown-item:eq(0)');
 const $synth = $('.dropdown-item:eq(1)');
+const $bpmSlider = $('#bpmSlider');
+const $volSlider = $('#volSlider');
 
 const colors = {
   'C': 'rgb(198, 115, 47)',
@@ -68,6 +72,8 @@ var synth = new tone.PolySynth({
   polyphony: 4,
   voice: tone.Synth,
 }).toMaster();
+
+var membrane = new tone.MembraneSynth().toMaster();
 
 synth.set({
   'oscillator': {
@@ -129,6 +135,14 @@ function closeSidebar() {
   $('#shadowSideBar, #sideBar').css('width', '80px');
   sidebarOpen = false;
 }
+
+$bpmSlider.mouseup(() => {
+  tone.Transport.bpm.value = $bpmSlider.val();
+});
+
+$volSlider.mouseup(() => {
+  tone.Master.volume.value = $volSlider.val();
+});
 
 $settingsNav.click(() => {
   $('.modal:eq(0)').show();
@@ -239,29 +253,75 @@ function loadSynth(selected) {
       },
       'volume': -5,
     });
+    selectedInst = 'piano';
   }
   else if (selected.innerHTML === 'SYNTH') {
     synth.set({
       'oscillator': {
-        'type': 'square',
-        'modulationFrequency': 0.2,
-        'harmonicity': 1.0,
+        'type': 'fatsawtooth',
+        'spread': 30,
+        'count': 3,
       },
       'envelope': {
-        'attack': 0.02,
-        'decay': 0.2,
-        'sustain': 0.2,
-        'release': 1.5,
+        'attack': 0.01,
+        'decay': 0.1,
+        'sustain': 0.5,
+        'release': 0.4,
+        'attackCurve': 'exponential',
       },
       'volume': -8,
     });
+    selectedInst = 'synth';
+  }
+  else if (selected.innerHTML === 'XYLOPHONE') {
+    synth.set({
+      'oscillator': {
+        'type': 'sine',
+      },
+      'envelope': {
+        'attack': 0.01,
+        'decay': 0.1,
+        'sustain': 0.1,
+        'release': 0.8,
+      },
+      'volume': -5,
+    });
+    selectedInst = 'xylophone';
+  }
+  else if (selected.innerHTML === 'PERCUSSION') {
+    membrane.set({
+      'pitchDecay': 0.01,
+      'octaves': 2,
+      'oscillator': {
+        'frequency': 440,
+        'type': 'fmsine',
+        'modulationIndex': 0.1,
+        'modulationType': 'sawtooth',
+        'harmonicity': 0.44,
+      },
+      'envelope': {
+        'attack': 0.0006,
+        'decay': 0.25,
+        'sustain': 0,
+        'release': 1.4,
+        'attackCurve': 'exponential',
+        'decayCurve': 'exponential',
+        'releaseCurve': 'exponential',
+      }
+    });
+    selectedInst = 'percussion';
   }
 }
 
 function playTone(tile, time) {
   const curNote = tile.note.slice(0, 1);
   const curPitch = parseInt(tile.pitch) + 2;
-  synth.triggerAttackRelease(`${curNote}${curPitch}`, '8n', time);
+  if (selectedInst !== 'percussion') {
+    synth.triggerAttackRelease(`${curNote}${curPitch}`, '8n', time);
+  }
+  else if (selectedInst === 'percussion') {
+    membrane.triggerAttackRelease(`${curNote}${curPitch}`, '8n', time);
+  }
 }
 
 let noteObj = [
@@ -282,8 +342,6 @@ let noteObj = [
   { 'time': '0:14', 'note': [] },
   { 'time': '0:15', 'note': [] },
 ];
-
-let seq;
 
 function buildSeq() {
   let colArr = [];
@@ -317,7 +375,12 @@ function buildSeq() {
   }
   seq = new tone.Sequence((time, value) => {
     console.log(value.note);
-    synth.triggerAttackRelease(value.note, '4n', time);
+    if (selectedInst !== 'percussion') {
+      synth.triggerAttackRelease(value.note, '4n', time);
+    }
+    else if (selectedInst === 'percussion') {
+      membrane.triggerAttackRelease(value.note.pop(), '4n', time);
+    }
   }, noteObj);
 }
 

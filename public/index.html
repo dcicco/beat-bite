@@ -30,7 +30,7 @@
           <div class="modal-body">
             <h2 class="modal-body-header">About</h2>
             <p>
-              Beat-Bite is an interactive web-based music maker! With the freedom to replace
+              Beat-Bite is an interactive web-based music maker! With the freedom to place
               notes in a sequence from a variety of different instruments. Saving and sharing
               custom made beats is easy and allows you to show the world your creation. With the
               help of the WebAudio API and the Tone.JS library we are able to provide a high quality
@@ -52,6 +52,8 @@
           <ul id="instrumentList" class="t-light">
             <li class="dropdown-item" tabindex="1">PIANO</li>
             <li class="dropdown-item" tabindex="1">SYNTH</li>
+            <li class="dropdown-item" tabindex="1">XYLOPHONE</li>
+            <li class="dropdown-item" tabindex="1">PERCUSSION</li>
           </ul>
           <div class="nav-hover" tabindex="0">
             <span class="nav-icon fas fa-cog"><h2 id="settings" class="nav-header">&nbsp;&nbsp;SETTINGS</h2></span>
@@ -70,7 +72,17 @@
         </div>
       </div>
       <div id="controlBar" class="t-light">
-        <span id="playBtn" class="fas fa-play"></span>
+        <div class="controlItems">
+          <div id="bpm">
+            <span id="bpmIcon" class="fas fa-tachometer-alt"></span>
+            <input id="bpmSlider" class="sliders" type="range" min="50" max="150" step="5"></input>
+          </div>
+          <span id="playBtn" class="fas fa-play"></span>
+          <div id="vol">
+            <span id="volIcon" class="fas fa-volume-up"></span>
+            <input id="volSlider" class="sliders" type="range" min="-15" max="5" step="1"></input>
+          </div>
+        </div>
       </div>
       <div id="mainContainer" class="t-light">
         <canvas id="canvas"></canvas>
