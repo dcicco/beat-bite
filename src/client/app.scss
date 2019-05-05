@@ -58,12 +58,17 @@
       box-sizing: content-box;
       outline: 0;
       color: inherit;
+      transition: background-color 0.4s;
 
-      &:focus {
-        border-left: 5px solid $highlight-blue;
+      &:hover {
         background-color: rgba($highlight-blue, .2);
       }
     }
+}
+
+.selectedInst {
+  border-left: 5px solid $highlight-blue;
+  background-color: rgba($highlight-blue, .2);
 }
 
 .nav-icon {
@@ -308,6 +313,30 @@
   color: inherit;
   line-height: 80px;
   cursor: pointer;
+  transition: color 0.3s;
+  transition-timing-function: ease-in-out;
+
+  &:hover {
+    color: $highlight-red !important;
+  }
+}
+
+#resetBtn {
+  position: absolute;
+  display: flex;
+  right: 25px;
+  bottom: 25px;
+  font-size: 24pt;
+  color: inherit;
+  cursor: pointer;
+  outline: none;
+  transition: transform .7s, color .3s;
+  transition-timing-function: ease-in-out;
+
+  &:hover {
+    color: $highlight-red !important;
+    transform: rotate(180deg);
+  }
 }
 
 #mainContainer {

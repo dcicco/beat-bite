@@ -7,14 +7,13 @@ $(document).ready(() => {
   console.log('ready');
 });
 
-tone.Transport.bpm.value = 120;
-
 let sidebarOpen = true;
 let instrumentsOpen = false;
 let isPlaying = false;
 let firstPlay = true;
 let seq;
 let selectedInst;
+let currentSelection;
 const $expandBars = $('.bars');
 const $sideBar = $('#sideBar');
 const $navItems = $('#navItems');
@@ -30,6 +29,7 @@ const $piano = $('.dropdown-item:eq(0)');
 const $synth = $('.dropdown-item:eq(1)');
 const $bpmSlider = $('#bpmSlider');
 const $volSlider = $('#volSlider');
+const $reset = $('#resetBtn');
 
 const colors = {
   'C': 'rgb(198, 115, 47)',
@@ -144,6 +144,28 @@ $volSlider.mouseup(() => {
   tone.Master.volume.value = $volSlider.val();
 });
 
+$reset.click(() => {
+  grid.forEachObject((o) => {
+    o.set('fill', 'transparent');
+  });
+  grid.renderAll();
+  seq.removeAll();
+  tone.Transport.stop();
+  firstPlay = true;
+});
+
+$('.dropdown-item').click((e) => {
+  loadSynth(e.target);
+  if (e.target !== currentSelection) {
+    $(e.target).toggleClass('selectedInst');
+    $(currentSelection).toggleClass('selectedInst');
+  }
+  else {
+    $(e.target).toggleClass('selectedInst');
+  }
+  currentSelection = e.target;
+});
+
 $settingsNav.click(() => {
   $('.modal:eq(0)').show();
 });
@@ -232,10 +254,6 @@ function drawGrid(tH, tW) {
     ii++;
   }
 }
-
-$('.dropdown-item').click((e) => {
-  loadSynth(e.target);
-});
 
 function loadSynth(selected) {
   if (selected.innerHTML === 'PIANO') {
