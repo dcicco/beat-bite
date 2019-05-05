@@ -7,6 +7,8 @@ $(document).ready(() => {
   console.log('ready');
 });
 
+/* Globals & jQuery DOM elements cached */
+
 let sidebarOpen = true;
 let instrumentsOpen = false;
 let isPlaying = false;
@@ -31,6 +33,8 @@ const $bpmSlider = $('#bpmSlider');
 const $volSlider = $('#volSlider');
 const $reset = $('#resetBtn');
 
+/* Color palette object for each note tile */
+
 const colors = {
   'C': 'rgb(198, 115, 47)',
   'D': 'rgb(198, 72, 47)',
@@ -41,7 +45,11 @@ const colors = {
   'B': 'rgb(85, 47, 198)',
 };
 
+/* 2 octaves of notes being used */
+
 const notes = ['B', 'A', 'G', 'F', 'E', 'D', 'C', 'B', 'A', 'G', 'F', 'E', 'D', 'C'];
+
+/* Set canvas height and width to match container size */
 
 $canvas.attr({
   width: $mainDiv.width(),
@@ -51,6 +59,8 @@ $canvas.attr({
 var tileW = $mainDiv.width() / 16;
 var tileH = $mainDiv.height() / 14;
 
+/* Default tile options for each tile placed on the canvas */
+
 const rectOpt = {
   fill: 'transparent',
   stroke: 'rgba(20, 20, 22, 1)',
@@ -58,21 +68,29 @@ const rectOpt = {
   selectable: false,
 }
 
-var grid = new fabric.Canvas('canvas');
+/* Bind canvas to Fabric instance, Then draws the grid based on
+  current height and width divisions of the container
+ */
 
+var grid = new fabric.Canvas('canvas');
 drawGrid(tileH, tileW);
 
-// 1 = dark; 2 = light; 3 = contrast;
+/* Gets the current theme from localStorage (if set), then
+  changes the page theme to the corresponding theme.
+  1 = dark 2 = light 3 = contrast
+ */
+
 var activeTheme = localStorage.getItem('activeTheme');
 changeTheme(activeTheme);
 
-$piano.focus();
+/* Sets up the 2 synths that are used for the instruments,
+  default set to piano on page load
+ */
 
 var synth = new tone.PolySynth({
   polyphony: 4,
   voice: tone.Synth,
 }).toMaster();
-
 var membrane = new tone.MembraneSynth().toMaster();
 
 synth.set({
@@ -88,6 +106,15 @@ synth.set({
   },
   'volume': -5,
 });
+
+/**
+ *  PAGE EVENTS
+ */
+
+/* Gets the targetted tile, if its transparent, set it to its
+  corresponding color based on the note index, if its already
+  selected, turn it back transparent
+ */
 
 grid.on('mouse:down', (e) => {
   if (e.target.get('fill') !== 'transparent') {
@@ -109,6 +136,8 @@ $expandBars.click(() => {
   }
 });
 
+/* Opens and closes the instrument list and sets its state */
+
 $instruments.click(() => {
   if (instrumentsOpen === true) {
     $('#instrumentList').hide();
@@ -120,21 +149,9 @@ $instruments.click(() => {
   }
 });
 
-function openSidebar() {
-  $('.nav-header').show();
-  $('#instrumentList').show();
-  $('#shadowSideBar, #sideBar').css('width', '270px');
-  $('.nav-icon').css('padding', '10px 0 10px 28px');
-  sidebarOpen = true;
-}
-
-function closeSidebar() {
-  $('.nav-header:not(#naming)').hide();
-  $('#instrumentList').hide();
-  $('.nav-icon').css('padding', '20px 0 20px 28px');
-  $('#shadowSideBar, #sideBar').css('width', '80px');
-  sidebarOpen = false;
-}
+/* Gets values of BPM and Volume on mouse up, then sets
+  them to Tone's transport and master channels accordingly
+ */
 
 $bpmSlider.mouseup(() => {
   tone.Transport.bpm.value = $bpmSlider.val();
@@ -143,6 +160,10 @@ $bpmSlider.mouseup(() => {
 $volSlider.mouseup(() => {
   tone.Master.volume.value = $volSlider.val();
 });
+
+/* Reset button clears all tiles on the page, requests a re-render
+  and tells the transport to stop
+ */
 
 $reset.click(() => {
   grid.forEachObject((o) => {
@@ -153,6 +174,8 @@ $reset.click(() => {
   tone.Transport.stop();
   firstPlay = true;
 });
+
+/* Event for toggling the pseduo focus class on the selected instrument */
 
 $('.dropdown-item').click((e) => {
   loadSynth(e.target);
@@ -165,6 +188,8 @@ $('.dropdown-item').click((e) => {
   }
   currentSelection = e.target;
 });
+
+/* Events for opening and closing modals based on the nav buttons */
 
 $settingsNav.click(() => {
   $('.modal:eq(0)').show();
@@ -188,10 +213,61 @@ $closeAbout.click(() => {
   $('.modal').hide();
 });
 
+/* Initializes the theme changer based on the selection */
+
 $('.modal-button').click((e) => {
   const theme = e.target.id;
   changeTheme(theme);
 });
+
+/* Play button handels the changing of icon for the respective
+  option, determines if the sequence needs to be built or not,
+  and either plays the sequence, or pauses the transport
+ */
+
+$playBtn.click(() => {
+  if (!isPlaying) {
+    if (firstPlay) {
+      buildSeq();
+      firstPlay = false;
+    }
+    $playBtn.removeClass('fa-play');
+    $playBtn.addClass('fa-pause');
+    isPlaying = true;
+    playSeq();
+  }
+  else if (isPlaying) {
+    $playBtn.removeClass('fa-pause');
+    $playBtn.addClass('fa-play');
+    isPlaying = false;
+    tone.Transport.pause();
+  }
+});
+
+/* Functions for opening and closing the sidebar based on
+  the event from the 'bars' icon, modifies css and shows or hides
+*/
+
+function openSidebar() {
+  $('.nav-header').show();
+  $('#instrumentList').show();
+  $('#shadowSideBar, #sideBar').css('width', '270px');
+  $('.nav-icon').css('padding', '10px 0 10px 28px');
+  sidebarOpen = true;
+}
+
+function closeSidebar() {
+  $('.nav-header:not(#naming)').hide();
+  $('#instrumentList').hide();
+  $('.nav-icon').css('padding', '20px 0 20px 28px');
+  $('#shadowSideBar, #sideBar').css('width', '80px');
+  sidebarOpen = false;
+}
+
+/* Theme changer takes in a theme parameter from when its called
+  and determines which theme it needs to load. Classes are set up
+  based on inheritance so the theme colors cascade downwards on change
+ */
 
 function changeTheme(theme) {
   if (theme === 'darkTheme' || theme === '1') {
@@ -224,6 +300,15 @@ function changeTheme(theme) {
   }
 }
 
+/* Function for drawing the grid, takes in 2 parameters from the
+  height and width of the container as determined on load. Loops
+  through starting by creating columns vertically until it hits
+  the edge of the screen. Every loop creates a Fabric rectangle
+  with the options specified, and sets their note and pitch data
+  accordingly based on position of the tile, then appends to the
+  canvas.
+ */
+
 function drawGrid(tH, tW) {
   let ii = 1;
   for (var w = 0; w < $mainDiv.width(); w += tW) {
@@ -254,6 +339,12 @@ function drawGrid(tH, tW) {
     ii++;
   }
 }
+
+/* Function that loads the synth, takes 1 parameter that is the
+  selected synth element when its called. Based on the 4 cases,
+  determines which options to give the synth for the different
+  sounds. Sets the global to which instrument is currently selected.
+ */
 
 function loadSynth(selected) {
   if (selected.innerHTML === 'PIANO') {
@@ -331,6 +422,12 @@ function loadSynth(selected) {
   }
 }
 
+/* Function that plays the sound of the note the user is places
+  when it is clicked on the screen, determines which synth to use
+  based on the currently selected instrument. Triggers notes for
+  a duration of an 8th note.
+ */
+
 function playTone(tile, time) {
   const curNote = tile.note.slice(0, 1);
   const curPitch = parseInt(tile.pitch) + 2;
@@ -341,6 +438,11 @@ function playTone(tile, time) {
     membrane.triggerAttackRelease(`${curNote}${curPitch}`, '8n', time);
   }
 }
+
+/* noteObj is the static datastructure being used to place all
+  the notes in the sequence based on their time and how many are
+  selected in the same measure.
+ */
 
 let noteObj = [
   { 'time': '0', 'note': [] },
@@ -361,12 +463,20 @@ let noteObj = [
   { 'time': '0:15', 'note': [] },
 ];
 
+/* Function that builds the note sequence */
+
 function buildSeq() {
+  /* Variable declarations */
   let colArr = [];
   let colNum = 0;
   let emptyNum = 0;
   let objNum = 0;
+  /* Load all the tile objects from the canvas */
   const tiles = grid._objects;
+  /* Loop through every tile (224 total) if the tile has
+    a fill, get its note, and pitch, then push it to the
+    temp array. If no fill, increment the empty variable.
+  */
   for (let i = 0; i < 224; i++) {
     if (tiles[i].fill !== 'transparent') {
       const curNote = tiles[i].note.slice(0, 1);
@@ -376,13 +486,22 @@ function buildSeq() {
     else if (tiles[i].fill === 'transparent') {
       emptyNum += 1;
     }
+    /* Incrememnt the column variable once it goes through */
     colNum += 1;
+    /* Once it reaches the end of a column, determines if
+      the whole column is empty, if it is, then set a blank
+      note that will be read as a 'rest'
+    */
     if (colNum === 14 && emptyNum === 14) {
       objNum += 1;
       emptyNum = 0;
       colNum = 0;
       colArr = [];
     }
+    /* If it is not empty then set all the nots in the column
+      to the noteObj based on the position of the loop and using
+      the objNum increment variable.
+     */
     else if (colNum === 14 && emptyNum !== 14) {
       noteObj[objNum].note = colArr;
       objNum += 1;
@@ -391,8 +510,12 @@ function buildSeq() {
       colArr = [];
     }
   }
+  /* Creates the Tone sequence, takes in the time global from Transport
+    and the value is the iterated item from the noteObj that is provided.
+    Determines which synth to use based on the currently selected instrument.
+    Each note is played as a 4th note.
+   */
   seq = new tone.Sequence((time, value) => {
-    console.log(value.note);
     if (selectedInst !== 'percussion') {
       synth.triggerAttackRelease(value.note, '4n', time);
     }
@@ -402,26 +525,9 @@ function buildSeq() {
   }, noteObj);
 }
 
+/* Function that starts the transport and starts the sequence at the beginning */
+
 function playSeq() {
   tone.Transport.start();
   seq.start(0);
 }
-
-$playBtn.click(() => {
-  if (!isPlaying) {
-    if (firstPlay) {
-      buildSeq();
-      firstPlay = false;
-    }
-    $playBtn.removeClass('fa-play');
-    $playBtn.addClass('fa-pause');
-    isPlaying = true;
-    playSeq();
-  }
-  else if (isPlaying) {
-    $playBtn.removeClass('fa-pause');
-    $playBtn.addClass('fa-play');
-    isPlaying = false;
-    tone.Transport.pause();
-  }
-});
