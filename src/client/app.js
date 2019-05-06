@@ -250,7 +250,7 @@ $playBtn.click(() => {
 
 function openSidebar() {
   $('.nav-header').show();
-  $('#instrumentList').show();
+  $('#instrumentList, .icon-after').show();
   $('#shadowSideBar, #sideBar').css('width', '270px');
   $('.nav-icon').css('padding', '10px 0 10px 28px');
   sidebarOpen = true;
@@ -258,7 +258,7 @@ function openSidebar() {
 
 function closeSidebar() {
   $('.nav-header:not(#naming)').hide();
-  $('#instrumentList').hide();
+  $('#instrumentList, .icon-after').hide();
   $('.nav-icon').css('padding', '20px 0 20px 28px');
   $('#shadowSideBar, #sideBar').css('width', '80px');
   sidebarOpen = false;

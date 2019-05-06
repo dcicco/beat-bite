@@ -30,7 +30,10 @@ module.exports = {
       },
       {
         test: /\.(png|jpg|woff|woff2|eot|ttf|svg)$/,
-        loader: 'file-loader'
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]',
+        },
       },
       {
         test: /fabric(\.min)?\.js$/,
