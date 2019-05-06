@@ -43,9 +43,9 @@ a:link, a:visited {
 }
 
 #navItems {
-  font-family: $font-main;
   padding: 25px 0 25px 0;
   h2 {
+    font-family: $font-main;
     display: inline-flex;
     font-size: 14pt;
     font-weight: 700;
@@ -89,12 +89,7 @@ a:link, a:visited {
   &:focus {
     border-left: 5px solid $highlight-red;
 
-    #saved {
-      &:after {
-        content: fa-content($fa-var-angle-down);
-      }
-    }
-    #instruments {
+    h2 + span {
       &:after {
         content: fa-content($fa-var-angle-down);
       }
