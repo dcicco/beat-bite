@@ -42,7 +42,7 @@
   "dependencies": {
     "@babel/polyfill": "7.2.5",
     "express": "4.16.4",
-    "fabric": "2.7.0",
+    "fabric": "5.2.4",
     "firebase": "5.8.5",
     "jquery": "^3.4.1",
     "tone": "13.4.9"
