@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "7.2.5",
-    "express": "4.16.4",
+    "express": "4.17.3",
     "fabric": "2.7.0",
     "firebase": "5.8.5",
     "jquery": "^3.4.1",
